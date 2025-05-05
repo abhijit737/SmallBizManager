@@ -113,11 +113,12 @@
 
 1. Clone the repo:
 
+https://github.com/abhijit737/SmallBizManager
 
 2. Update DB connection string in `appsettings.json`:
 ```json
 "ConnectionStrings": {
-  "DefaultConnection": "Server=.;Database=SmallBizDb;Trusted_Connection=True;"
+  "DefaultConnection": "Server=.;Database=SmallBizDb;TrustServerCertificate=True;Trusted_Connection=True;"
 }
 
 3. Apply EF migrations and create the database:

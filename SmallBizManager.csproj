@@ -24,6 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="ProjectImages\" />
     <Folder Include="wwwroot\NewFolder\" />
   </ItemGroup>
 
