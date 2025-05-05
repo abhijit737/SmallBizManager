@@ -184,3 +184,38 @@ SmallBizManager/
 
 
 
+Please find attched UI Images-
+
+
+> ![Register Page](https://github.com/abhijit737/SmallBizManager/blob/master/ProjectImages/smallbizregister.png?raw=true)
+
+> ![Login Page](https://github.com/abhijit737/SmallBizManager/blob/master/ProjectImages/smallbizlogin.png?raw=true)
+
+> ![Home Page](https://github.com/abhijit737/SmallBizManager/blob/master/ProjectImages/smallbizhome.png?raw=true)
+
+> ![Producs Page](https://github.com/abhijit737/SmallBizManager/blob/master/ProjectImages/smallbizproductsindex.png?raw=true)
+
+> ![Product Edit Page](https://github.com/abhijit737/SmallBizManager/blob/master/ProjectImages/smallbizproductedit.png?raw=true)
+
+> ![Employee Page](https://github.com/abhijit737/SmallBizManager/blob/master/ProjectImages/smallbizemployeesindex.png?raw=true)
+
+> ![Employee Create Page](https://github.com/abhijit737/SmallBizManager/blob/master/ProjectImages/smallbizcreateemployee.png?raw=true)
+
+> ![Employee Delete Page](https://github.com/abhijit737/SmallBizManager/blob/master/ProjectImages/smallbizDeleteemployee.png?raw=true)
+
+> ![Orders Page](https://github.com/abhijit737/SmallBizManager/blob/master/ProjectImages/smallbizOrders.png?raw=true)
+
+> ![Create Order Page](https://github.com/abhijit737/SmallBizManager/blob/master/ProjectImages/smallbizCreateOrder.png?raw=true)
+
+> ![Edit Order Page](https://github.com/abhijit737/SmallBizManager/blob/master/ProjectImages/smallbizEditOrder.png?raw=true)
+
+> ![Delete Order Page](https://github.com/abhijit737/SmallBizManager/blob/master/ProjectImages/smallbizdeleteOrder.png?raw=true)
+
+
+
+
+
+
+
+
+
