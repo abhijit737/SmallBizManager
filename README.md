@@ -12,8 +12,7 @@
 - **SQL Server / SQLite** (Relational database)
 - **Razor Views** (Dynamic HTML rendering)
 - **Bootstrap** (UI styling)
-- **HtmlRenderer.PdfSharp** (Order PDF export)
-
+- Export to excel
 ---
 
 ## 📦 Features
