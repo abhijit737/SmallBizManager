@@ -1,0 +1,16 @@
+﻿@model LoginViewModel
+@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+<form method="post">
+    <div class="form-group">
+        <label for="Email">Username/Email</label>
+        <input type="email" id="email" name="email" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label for="Password">Password</label>
+        <input type="password" id="Password" name="Password" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">Login</button>
+
+    <a asp-action="Register" asp-controller="Account" class="btn btn-link">Click To Register Screen</a>
+
+</form>

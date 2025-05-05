@@ -1,0 +1,28 @@
+﻿@model RegisterViewModel
+
+<form method="post">
+    <div class="form-group">
+        <label for="Email">Email</label>
+        <input type="email" id="Email" name="Email" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label for="Password">Password</label>
+        <input type="password" id="Password" name="Password" class="form-control" />
+    </div>
+
+ 
+
+    <div class="form-group">
+        <label>Role</label>
+        <select asp-for="Role" class="form-control" asp-items="ViewBag.Roles"></select>
+    </div>
+    <button type="submit" class="btn btn-primary">Register</button>
+
+    <a asp-action="Login" asp-controller="Account" class="btn btn-link">Click To Login Screen</a>
+
+</form>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

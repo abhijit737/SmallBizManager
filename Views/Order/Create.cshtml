@@ -1,0 +1,276 @@
+﻿@* @model SmallBizManager.Models.Order
+
+@{
+    ViewData["Title"] = "Create Order";
+    var products = ViewBag.Products as List<SmallBizManager.Models.Product> ?? new List<SmallBizManager.Models.Product>();
+    var itemList = Model.Items?.ToList() ?? new List<SmallBizManager.Models.OrderItem>(); 
+
+}
+
+<h2>Create Order</h2>
+
+<form method="post">
+    <div class="form-group">
+        <label asp-for="CustomerName"></label>
+        <input asp-for="CustomerName" class="form-control" />
+        <span asp-validation-for="CustomerName" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="OrderDate"></label>
+        <input asp-for="OrderDate" class="form-control" type="date" />
+        <span asp-validation-for="OrderDate" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Status"></label>
+        <input asp-for="Status" class="form-control" />
+        <span asp-validation-for="Status" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="TotalAmount"></label>
+        <input asp-for="TotalAmount" class="form-control" type="number" step="0.01" />
+        <span asp-validation-for="TotalAmount" class="text-danger"></span>
+    </div>
+
+    <h4>Order Items</h4>
+    <div id="order-items">
+       
+
+     @for (int i = 0; i < itemList.Count; i++)
+{
+    <div class="form-row mb-2">
+        <div class="col-md-6">
+            <select name="Items[@i].ProductId" class="form-control">
+                <option value="">-- Select Product --</option>
+                @foreach (var product in products)
+                {
+                    var selected = itemList[i].ProductId == product.Id ? "selected=\"selected\"" : "";
+                    @:<option value="@product.Id" @Html.Raw(selected)>@product.Name</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-4">
+            <input type="number" name="Items[@i].Quantity" class="form-control" placeholder="Quantity"
+                   value="@itemList[i].Quantity" />
+        </div>
+    </div>
+}
+
+
+
+
+
+    </div>
+
+    <button type="button" id="add-item" class="btn btn-secondary mt-2 mb-3">Add Item</button>
+    <button type="submit" class="btn btn-primary">Save</button>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        let itemIndex = @Model.Items?.Count ?? 1;
+        const products = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(products));
+
+        document.getElementById('add-item').addEventListener('click', function () {
+            const container = document.getElementById('order-items');
+
+            const row = document.createElement('div');
+            row.className = 'form-row mb-2';
+
+            const productOptions = products.map(p =>
+                `<option value="${p.Id}">${p.Name}</option>`
+            ).join('');
+
+            row.innerHTML = `
+                <div class="col-md-6">
+                    <select name="Items[${itemIndex}].ProductId" class="form-control">
+                        <option value="">-- Select Product --</option>
+                        ${productOptions}
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <input type="number" name="Items[${itemIndex}].Quantity" class="form-control" placeholder="Quantity" value="1" />
+                </div>
+            `;
+
+            container.appendChild(row);
+            itemIndex++;
+        });
+    </script>
+}
+   *@
+
+   @model SmallBizManager.Models.CreateOrderViewModel
+
+@{
+    ViewData["Title"] = "Create Order";
+    var products = ViewBag.Products as List<SmallBizManager.Models.Product> ?? new List<SmallBizManager.Models.Product>();
+//    var itemList = Model.Items?.ToList() ?? new List<SmallBizManager.Models.OrderItem>();
+    var itemList = Model.Items?.ToList() ?? new List<SmallBizManager.Models.OrderItemInputModel>();
+
+}
+
+<h2>Create Order</h2>
+
+<form method="post">
+    <div class="form-group">
+        <label asp-for="CustomerName"></label>
+        <input asp-for="CustomerName" class="form-control" />
+        <span asp-validation-for="CustomerName" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="OrderDate"></label>
+        <input asp-for="OrderDate" class="form-control" type="date" />
+        <span asp-validation-for="OrderDate" class="text-danger"></span>
+    </div>
+
+    @* <div class="form-group">
+         <label asp-for="Status"></label>
+         <input asp-for="Status" class="form-control" />
+         <span asp-validation-for="Status" class="text-danger"></span>
+     </div>
+
+
+     *@
+    <div class="form-group">
+        <label asp-for="Status"></label>
+        <select asp-for="Status" class="form-control" asp-items="ViewBag.StatusList">
+            <option value="">-- Select Status --</option>
+        </select>
+        <span asp-validation-for="Status" class="text-danger"></span>
+
+        </div>
+
+    
+    
+
+    <h4>Order Items</h4>
+    <div id="order-items">
+        @for (int i = 0; i < itemList.Count; i++)
+        {
+            <div class="form-row mb-2">
+                <div class="col-md-6">
+                    <select asp-for="Items[@i].ProductId" class="form-control">
+                        <option value="">-- Select Product --</option>
+                        @foreach (var product in ViewBag.Products as List<SmallBizManager.Models.Product>)
+                        {
+                            <option value="@product.Id" selected="@(Model.Items[@i].ProductId == product.Id)">
+                                @product.Name
+                            </option>
+                        }
+                    </select>
+
+                </div>
+                <div class="col-md-4">
+                    <input type="number" class="form-control quantity-input" name="Items[@i].Quantity" value="@itemList[i].Quantity" min="1" />
+                </div>
+                <button type="button" class="btn btn-sm btn-danger" onclick="removeRow(this)">
+                    Remove
+                </button>
+            </div>
+        }
+    </div>
+
+    <button type="button" id="add-item" class="btn btn-secondary mt-2 mb-3">Add Item</button>
+
+    <div class="form-group">
+        <label asp-for="TotalAmount"></label>
+        <input asp-for="TotalAmount" class="form-control" type="number" step="0.01" readonly id="TotalAmount" />
+        <span asp-validation-for="TotalAmount" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+ 
+
+    <script>
+        let itemIndex = @Model.Items?.Count ?? 0;
+        const products = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(products));
+
+        function updateTotal() {
+            let total = 0;
+            document.querySelectorAll('#order-items .form-row').forEach(row => {
+                const productSelect = row.querySelector('select');
+                const quantityInput = row.querySelector('input.quantity-input');
+                const productId = productSelect.value;
+                const quantity = parseInt(quantityInput.value) || 0;
+
+                const product = products.find(p => p.Id == productId);
+                if (product) {
+                    total += product.Price * quantity;
+                }
+            });
+
+            document.getElementById('TotalAmount').value = total.toFixed(2);
+        }
+
+        document.getElementById('add-item').addEventListener('click', function () {
+            const container = document.getElementById('order-items');
+
+            const row = document.createElement('div');
+            row.className = 'form-row mb-2';
+
+            const productOptions = products.map(p =>
+                `<option value="${p.Id}" data-price="${p.Price}">${p.Name}</option>`
+            ).join('');
+
+            row.innerHTML = `
+                <div class="col-md-6">
+                    <select name="Items[${itemIndex}].ProductId" class="form-control product-select">
+                        <option value="">-- Select Product --</option>
+                        ${productOptions}
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <input type="number" name="Items[${itemIndex}].Quantity" class="form-control quantity-input" placeholder="Quantity" value="1" min="1" />
+                </div>
+            `;
+
+            container.appendChild(row);
+            itemIndex++;
+            updateTotal();
+        });
+
+        document.addEventListener('change', function (e) {
+            if (e.target.classList.contains('product-select') || e.target.classList.contains('quantity-input')) {
+                updateTotal();
+            }
+        });
+
+        document.addEventListener('input', function (e) {
+            if (e.target.classList.contains('quantity-input')) {
+                updateTotal();
+            }
+        });
+
+          function removeRow(button) {
+            const row = button.closest('.form-row');
+            if (row) {
+                row.remove();
+            }
+        }
+
+        function deselectProduct(button) {
+            const row = button.closest('.form-row');
+            if (row) {
+                const select = row.querySelector('select');
+                if (select) {
+                    select.value = "";
+                }
+            }
+        }
+
+        window.onload = updateTotal;
+    </script>
+
+}
+

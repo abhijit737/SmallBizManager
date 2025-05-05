@@ -1,0 +1,17 @@
+﻿
+@model SmallBizManager.Models.DashboardMetrics
+
+@{
+    ViewBag.Title = "Dashboard";
+}
+
+
+<h1>Welcome to SmallBiz Manager</h1>
+<p>Your business management system for employees, orders, and products.</p>
+<h2>Dashboard</h2>
+
+<div>
+    <p><strong>Total Products:</strong> @Model.TotalProducts</p>
+    <p><strong>Total Orders:</strong> @Model.TotalOrders</p>
+    <p><strong>Monthly Sales:</strong> ₹@Model.MonthlySales.ToString("N2")</p>
+</div>
