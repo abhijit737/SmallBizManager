@@ -72,7 +72,7 @@ new Claim(ClaimTypes.Role, user.Role.ToString())
             _httpContextAccessor.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme).Wait();
         }
 
-        // Helper methods
+        
         private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {
             using (var hmac = new HMACSHA512())

@@ -54,7 +54,6 @@ namespace SmallBizManager.Controllers
 
                     product.ImagePath = "/uploads/" + fileName;
 
-                    // Generate thumbnail
                     string thumbFileName = "thumb_" + fileName;
                     string thumbPath = Path.Combine(uploadsFolder, thumbFileName);
                     GenerateThumbnail(filePath, thumbPath, 100, 100);

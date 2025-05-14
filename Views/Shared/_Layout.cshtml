@@ -22,9 +22,7 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        @* <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li> *@
+                        
                         <li class="nav-item"><a class="nav-link" asp-controller="Product" asp-action="Index">Products</a></li>
                         <li class="nav-item"><a class="nav-link" asp-controller="Employee" asp-action="Index">Employees</a></li>
                         <li class="nav-item"><a class="nav-link" asp-controller="Order" asp-action="Index">Orders</a></li>
@@ -47,7 +45,7 @@
 
     <div class="container">
         <main role="main" class="pb-3">
-            @RenderBody() <!-- This is where the content of your pages will be injected -->
+            @RenderBody() 
         </main>
     </div>
 
@@ -60,6 +58,6 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false) <!-- If you need to add custom scripts -->
+    @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

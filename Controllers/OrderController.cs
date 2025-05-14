@@ -48,7 +48,6 @@ namespace SmallBizManager.Controllers
             return View(data);
         }
 
-        // Helper to build the dropdown list of statuses
 
         private List<SelectListItem> GetStatusList(string selected = null) =>
             Enum.GetValues<OrderStatus>()
@@ -64,7 +63,6 @@ namespace SmallBizManager.Controllers
         {
             ViewBag.Products = _productService.GetAllProducts();
             ViewBag.StatusList = GetStatusList(OrderStatus.Pending.ToString());
-            // ViewBag.StatusList = GetStatusList();
 
 
             var vm = new CreateOrderViewModel
@@ -109,7 +107,6 @@ namespace SmallBizManager.Controllers
             {
                 CustomerName = model.CustomerName,
                 OrderDate = model.OrderDate,
-                // parse string back into the enum
                 Status = Enum.Parse<OrderStatus>(model.Status),
                 Items = orderItems,
                 TotalAmount = orderItems.Sum(i => i.Quantity * i.UnitPrice)
@@ -156,7 +153,7 @@ namespace SmallBizManager.Controllers
             var existingOrder = _orderService.GetOrderById(id);
             if (existingOrder == null) return NotFound();
 
-            // rebuild items
+            
             existingOrder.Items.Clear();
             var updatedItems = model.Items
                 .Where(i => _productService.GetProductById(i.ProductId) != null)
@@ -196,34 +193,11 @@ namespace SmallBizManager.Controllers
 
             var orders = _orderService.GetAllOrders();
 
-            //using (var package = new ExcelPackage())
-            //{
-            //    var worksheet = package.Workbook.Worksheets.Add("Orders");
-
-            //    worksheet.Cells[1, 1].Value = "Order ID";
-            //    worksheet.Cells[1, 2].Value = "Customer";
-            //    worksheet.Cells[1, 3].Value = "Status";
-            //    worksheet.Cells[1, 4].Value = "Total Amount";
-
-            //    for (int i = 0; i < orders.Count; i++)
-            //    {
-            //        var order = orders[i];
-            //        worksheet.Cells[i + 2, 1].Value = order.Id;
-            //        worksheet.Cells[i + 2, 2].Value = order.CustomerName;
-            //        worksheet.Cells[i + 2, 3].Value = order.Status;
-            //        worksheet.Cells[i + 2, 4].Value = order.TotalAmount;
-            //    }
-
-            //    var stream = new MemoryStream(package.GetAsByteArray());
-            //    return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Orders.xlsx");
-            //}
 
             using (var package = new ExcelPackage())
             {
-                // Add a worksheet for Orders
                 var worksheet = package.Workbook.Worksheets.Add("Orders");
 
-                // Set header row for the worksheet
                 worksheet.Cells[1, 1].Value = "Order ID";
                 worksheet.Cells[1, 2].Value = "Customer Name";
                 worksheet.Cells[1, 3].Value = "Order Date";
@@ -231,7 +205,6 @@ namespace SmallBizManager.Controllers
                 worksheet.Cells[1, 5].Value = "Status";
                 worksheet.Cells[1, 6].Value = "Total Amount";
 
-                // Loop through each order and populate the Excel rows
                 int row = 2;
                 foreach (var order in orders)
                 {
@@ -239,7 +212,6 @@ namespace SmallBizManager.Controllers
                     worksheet.Cells[row, 2].Value = order.CustomerName;
                     worksheet.Cells[row, 3].Value = order.OrderDate.ToString("dd-MM-yyyy");
 
-                    // Concatenate item details for each order (Product Name, Quantity, Unit Price)
                     var itemDetails = string.Join("\n", order.Items.Select(item =>
                         $"{item.Product.Name} (Qty: {item.Quantity}, Price: ₹ {item.UnitPrice})"));
                     worksheet.Cells[row, 4].Value = itemDetails;
@@ -250,7 +222,6 @@ namespace SmallBizManager.Controllers
                     row++;
                 }
 
-                // Adjust columns for readability
                 worksheet.Column(1).AutoFit();
                 worksheet.Column(2).AutoFit();
                 worksheet.Column(3).AutoFit();
@@ -258,7 +229,6 @@ namespace SmallBizManager.Controllers
                 worksheet.Column(5).AutoFit();
                 worksheet.Column(6).AutoFit();
 
-                // Convert the Excel package to a byte array and return it as a downloadable file
                 var stream = new MemoryStream(package.GetAsByteArray());
                 return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Orders.xlsx");
             }

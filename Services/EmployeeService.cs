@@ -16,9 +16,7 @@
         {
             _context = context;
         }
-
-        // Create a new employee
-        public bool CreateEmployee(Employee employee)
+public bool CreateEmployee(Employee employee)
         {
             if (employee == null)
                 return false;
@@ -28,13 +26,13 @@
             return true;
         }
 
-        // Get all employees
+        
         public List<Employee> GetAllEmployees()
         {
             return _context.Employees.ToList();
         }
 
-        // Get an employee by their ID
+       
         public Employee GetEmployeeById(int employeeId)
         {
             return _context.Employees.FirstOrDefault(e => e.EmployeeId == employeeId);
@@ -60,7 +58,7 @@
             return true;
         }
 
-        // Delete an employee by their ID
+        
         public bool DeleteEmployee(int employeeId)
         {
             var employee = _context.Employees.FirstOrDefault(e => e.EmployeeId == employeeId);

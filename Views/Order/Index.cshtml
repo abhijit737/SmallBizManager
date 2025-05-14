@@ -52,10 +52,7 @@
                 <!-- Calculate Total Amount -->
                 <td>₹ @order.TotalAmount.ToString("0.00")</td>
 
-                @* <td>
-                    @((order.Items?.Sum(i => i.Quantity * i.UnitPrice) ?? 0).ToString("C"))
-                </td>
- *@
+               
                 <td>
                     <a href="@Url.Action("Edit", "Order", new { id = order.Id })" class="btn btn-primary">Edit</a>
                     <a href="@Url.Action("Delete", "Order", new { id = order.Id })" class="btn btn-danger">Delete</a>
