@@ -35,6 +35,7 @@
 </table>
 
 <form method="post">
+    @Html.AntiForgeryToken()
     <button type="submit" class="btn btn-danger">Delete</button>
     <a href="@Url.Action("Index", "Employee")" class="btn btn-secondary">Cancel</a>
 </form>

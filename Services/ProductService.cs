@@ -48,7 +48,7 @@ namespace SmallBizManager.Services
             _context.SaveChanges();
         }
 
-
+        
         public void DeleteProduct(int id)
         {
             var product = _context.Products.Find(id);

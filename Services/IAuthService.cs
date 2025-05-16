@@ -8,5 +8,7 @@ namespace SmallBizManager.Services
        public Task<bool> LoginAsync(LoginRequest model);
       public  Task<bool> RegisterAsync(RegisterRequest model);
       public  void Logout();
+        Task<string?> ValidateUserAndGenerateTokenAsync(LoginRequest model);
+
     }
 }

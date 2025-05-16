@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
+using Microsoft.IdentityModel.Tokens;
 using SmallBizManager.Data;
 using SmallBizManager.Models;
 using SmallBizManager.Models.Auth;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
@@ -13,13 +15,16 @@ namespace SmallBizManager.Services
 {
     public class AuthService : IAuthService
     {
+        private readonly IConfiguration _configuration; // inject in constructor
+
         private readonly ApplicationDbContext _context;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public AuthService(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor)
+        public AuthService(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor, IConfiguration configuration)
         {
             _context = context;
             _httpContextAccessor = httpContextAccessor;
+            _configuration = configuration;
         }
 
         public async Task<bool> LoginAsync(LoginRequest model)
@@ -90,5 +95,34 @@ new Claim(ClaimTypes.Role, user.Role.ToString())
                 return computedHash.SequenceEqual(storedHash);
             }
         }
+
+
+
+        public async Task<string?> ValidateUserAndGenerateTokenAsync(LoginRequest model)
+        {
+            var user = _context.Users.SingleOrDefault(u => u.Username == model.Username);
+            if (user == null || !VerifyPassword(model.Password, user.PasswordHash, user.PasswordSalt))
+                return null;
+
+            var claims = new[]
+            {
+        new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+        new Claim(ClaimTypes.Name, user.Username),
+        new Claim(ClaimTypes.Role, user.Role.ToString())
+    };
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]!));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var token = new JwtSecurityToken(
+                issuer: _configuration["Jwt:Issuer"],
+                audience: _configuration["Jwt:Audience"],
+                claims: claims,
+                expires: DateTime.UtcNow.AddHours(1),
+                signingCredentials: creds
+            );
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
     }
 }

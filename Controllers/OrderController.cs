@@ -29,15 +29,15 @@ namespace SmallBizManager.Controllers
     {
         private readonly IOrderService _orderService;
         private readonly IProductService _productService;
-        private readonly IConverter _pdfConverter;
+        //private readonly IConverter _pdfConverter;
 
 
 
-        public OrderController(IOrderService orderService, IProductService productService, IConverter converter)
+        public OrderController(IOrderService orderService, IProductService productService)
         {
             _orderService = orderService;
             _productService = productService;
-            _pdfConverter = converter;
+            //_pdfConverter = converter;
 
 
         }
@@ -80,6 +80,7 @@ namespace SmallBizManager.Controllers
 
         [Authorize(Policy = "StaffOnly")]
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Create(CreateOrderViewModel model)
         {
             if (!ModelState.IsValid)
@@ -141,6 +142,7 @@ namespace SmallBizManager.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Edit(int id, CreateOrderViewModel model)
         {
             if (!ModelState.IsValid)

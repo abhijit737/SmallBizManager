@@ -12,6 +12,7 @@
 <h2>Create Order</h2>
 
 <form method="post">
+    @Html.AntiForgeryToken()
     <div class="form-group">
         <label asp-for="CustomerName"></label>
         <input asp-for="CustomerName" class="form-control" />

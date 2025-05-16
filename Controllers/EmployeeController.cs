@@ -6,11 +6,13 @@ using Microsoft.AspNetCore.Mvc;
 using SmallBizManager.Data;
 using SmallBizManager.Models;
 using SmallBizManager.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+
 namespace SmallBizManager.Controllers
 {
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 
     [Authorize(Policy = "AdminOnly")]
-
     public class EmployeeController : Controller
     {
         private readonly IEmployeeService _employeeService;
@@ -26,7 +28,9 @@ namespace SmallBizManager.Controllers
         {
             return View(new Employee()); 
         }
+
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Create(Employee employee)
         {
             if (ModelState.IsValid)
@@ -41,6 +45,7 @@ namespace SmallBizManager.Controllers
         public IActionResult Edit(int id) => View(_employeeService.GetEmployeeById(id));
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Edit(Employee employee)
         {
             if (ModelState.IsValid)

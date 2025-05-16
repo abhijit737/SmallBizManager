@@ -37,9 +37,8 @@ namespace SmallBizManager.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(Product product, IFormFile ImageFile)
         {
-            if (ModelState.IsValid)
-            {
-                if (ImageFile != null && ImageFile.Length > 0)
+            
+                            if (ImageFile != null && ImageFile.Length > 0)
                 {
                     string uploadsFolder = Path.Combine(_env.WebRootPath, "uploads");
                     Directory.CreateDirectory(uploadsFolder);
@@ -62,15 +61,20 @@ namespace SmallBizManager.Controllers
 
                 _productService.CreateProduct(product);
                 return RedirectToAction("Index");
-            }
+            
 
-            return View(product);
+            
         }
 
         [Authorize(Policy = "AdminOnly")]
+        [HttpGet]
         public IActionResult Edit(int id)
         {
             var data = _productService.GetProductById(id);
+            if (data == null)
+            {
+                return NotFound();
+            }
             return View(data);
         }
 
@@ -78,10 +82,12 @@ namespace SmallBizManager.Controllers
 
         [Authorize(Policy = "AdminOnly")]
         [HttpPost]
-        public async Task<IActionResult> Edit(Product product, IFormFile ImageFile)
+        [ValidateAntiForgeryToken]
+
+        public async Task<IActionResult> Edit([Bind("Id,Name,Price,Stock,Description,ImagePath")] Product product, IFormFile ImageFile, string ExistingImagePath)
         {
-            if (ModelState.IsValid)
-            {
+          
+            
                 if (ImageFile != null && ImageFile.Length > 0)
                 {
                     var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images");
@@ -98,12 +104,15 @@ namespace SmallBizManager.Controllers
 
                     product.ImagePath = "/images/" + uniqueFileName;
                 }
-
+                else
+                {
+                    product.ImagePath = ExistingImagePath;
+                }
                 _productService.UpdateProduct(product);
                 return RedirectToAction("Index");
-            }
+            
 
-            return View(product);
+          
         }
 
 

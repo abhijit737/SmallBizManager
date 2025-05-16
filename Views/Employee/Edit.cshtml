@@ -7,7 +7,7 @@
 <h2>Edit Employee</h2>
 
 <form method="post">
-
+    @Html.AntiForgeryToken()
     <input type="hidden" asp-for="EmployeeId" />
 
     <div class="form-group">

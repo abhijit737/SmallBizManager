@@ -15,7 +15,7 @@ namespace SmallBizManager.Services
             _context = context;
         }
 
-        public bool CreateOrder(Order order)
+        public bool  CreateOrder(Order order)
         {
             if (order == null || order.Items == null || !order.Items.Any())
                 return false;

@@ -26,6 +26,7 @@ namespace SmallBizManager.Controllers
 
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
             var loginRequest = new LoginRequest
@@ -57,6 +58,7 @@ namespace SmallBizManager.Controllers
 
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
             var registerRequest = new RegisterRequest
@@ -78,6 +80,6 @@ namespace SmallBizManager.Controllers
         {
             _authService.Logout();
             return RedirectToAction("Login");
-        }
+        } 
     }
 }
